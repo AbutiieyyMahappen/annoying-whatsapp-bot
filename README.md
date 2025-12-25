@@ -34,11 +34,11 @@ node index.js
 
 ---
 
-## 👑 Developer
+## 👑 **Developer**
 
 **Abutieyy Mahappen**  
-Developer & Creator of Annoying WhatsApp Bot
+**Developer & Creator of Annoying WhatsApp Bot**
 
-- GitHub: https://github.com/AbutiieyyMahappen
+- **GitHub:** https://github.com/AbutiieyyMahappen
 
 ---
