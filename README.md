@@ -32,8 +32,9 @@ pkg update && pkg upgrade -y
 pkg install git nodejs -y
 
 git clone https://github.com/AbutiieyyMahappen/annoying-whatsapp-bot.git
+
 cd annoying-whatsapp-bot
+
 npm install
 
-**Run the bot**
 node index.js
