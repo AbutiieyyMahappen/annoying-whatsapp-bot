@@ -20,7 +20,7 @@ Do NOT use it to harass, spam, or violate WhatsApp policies.
 
 ## 🛠 Installation (Termux)
 
-### 1️⃣ Update Termux
+### 1️⃣ Update Termux & Setup
 ```bash
 pkg update && pkg upgrade -y
 pkg install git nodejs -y
@@ -31,3 +31,5 @@ npm install
 
 Run the bot
 node index.js
+
+**Developer Abutieyy Mahappen**
