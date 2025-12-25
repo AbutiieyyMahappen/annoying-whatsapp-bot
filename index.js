@@ -1,4 +1,7 @@
-/* 🤖 UNLIMITED REPLIES BOT */
+/* 🤖 ANNOYING WHATSAPP BOT v1.1.2
+👑 Developer: Abutieyy Mahappen
+GitHub: https://github.com/AbutiieyyMahappen
+*/
 
 const {
   default: makeWASocket,
@@ -14,13 +17,14 @@ const OWNER_NUMBER = "27687085163@s.whatsapp.net";
 
 let botEnabled = true;
 
+/* 🤖 AUTO REPLIES */
 const replies = [
   "Why are you texting me? 😒",
   "I hate you.",
   "Ohk 😏",
   "Yeah, I'm Mahappen the developer.",
   "I'm bored & missing you 😣",
-  "Stay tuned for my bot v1.1.2 🚀"
+  "Stay tuned for bot v1.1.2 🚀"
 ];
 
 async function startBot() {
@@ -29,7 +33,7 @@ async function startBot() {
   const sock = makeWASocket({
     logger: P({ level: "silent" }),
     auth: state,
-    printQRInTerminal: true,
+    printQRInTerminal: false,
     browser: ["Annoying Bot", "Chrome", "1.1.2"]
   });
 
@@ -39,12 +43,12 @@ async function startBot() {
     const { connection, lastDisconnect, qr } = update;
 
     if (qr) {
-      console.log("📱 Scan this QR to connect");
+      console.log("📱 Scan this QR with WhatsApp");
       qrcode.generate(qr, { small: true });
     }
 
     if (connection === "open") {
-      console.log("✅ Annoying Bot Connected");
+      console.log("✅ Bot Connected Successfully");
       console.log("👑 Owner: Abutieyy Mahappen");
     }
 
@@ -53,10 +57,13 @@ async function startBot() {
         lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut
       ) {
         startBot();
+      } else {
+        console.log("❌ Logged out. Delete auth folder and restart.");
       }
     }
   });
 
+  /* 📩 MESSAGE HANDLER */
   sock.ev.on("messages.upsert", async ({ messages }) => {
     const msg = messages[0];
     if (!msg.message || msg.key.fromMe) return;
@@ -68,6 +75,7 @@ async function startBot() {
     if (!text) return;
 
     const from = msg.key.remoteJid;
+    const isGroup = from.endsWith("@g.us");
     const sender = msg.key.participant || from;
     const isOwner = sender === OWNER_NUMBER;
 
@@ -83,39 +91,46 @@ GitHub: https://github.com/AbutiieyyMahappen`
 
     if (text === "/github") {
       return sock.sendMessage(from, {
-        text: `🐙 GitHub Repo
-https://github.com/AbutiieyyMahappen/annoying-whatsapp-bot`
+        text: `🐙 *Source Code*
+https://github.com/AbutiieyyMahappen/annoying-whatsapp-bot
+
+⭐ Star & Fork it`
       });
     }
 
-    if (text === "/ownermenu") {
+    if (text === "/on") {
       if (!isOwner)
         return sock.sendMessage(from, { text: "❌ Owner only command" });
 
-      return sock.sendMessage(from, {
-        text: `👑 *Owner Menu*
-/on  - Enable bot
-/off - Disable bot`
-      });
-    }
-
-    if (text === "/off" && isOwner) {
-      botEnabled = false;
-      return sock.sendMessage(from, { text: "😴 Bot OFF" });
-    }
-
-    if (text === "/on" && isOwner) {
       botEnabled = true;
-      return sock.sendMessage(from, { text: "😈 Bot ON" });
+      return sock.sendMessage(from, { text: "😈 Bot Enabled" });
     }
 
-    /* 🤖 AUTO REPLIES */
+    if (text === "/off") {
+      if (!isOwner)
+        return sock.sendMessage(from, { text: "❌ Owner only command" });
+
+      botEnabled = false;
+      return sock.sendMessage(from, { text: "😴 Bot Disabled" });
+    }
+
     if (!botEnabled) return;
 
-    await new Promise(r => setTimeout(r, 2000));
+    /* 🤖 AUTO REPLY */
+    await new Promise(r => setTimeout(r, 1500));
 
     const reply = replies[Math.floor(Math.random() * replies.length)];
-    await sock.sendMessage(from, { text: "🤖 " + reply });
+
+    if (isGroup) {
+      await sock.sendMessage(from, {
+        text: `🤖 ${reply}`,
+        mentions: [sender]
+      });
+    } else {
+      await sock.sendMessage(from, {
+        text: "🤖 " + reply
+      });
+    }
   });
 }
 
