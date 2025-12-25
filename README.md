@@ -17,7 +17,12 @@ Do NOT use it to harass, spam, or violate WhatsApp policies.
 - Internet connection
 
 ---
--DEVELOPER Abutieyy Mahappen
+> 🟦 **Developer**
+>
+> 👑 **Abutieyy Mahappen**  
+> **Developer & Creator of Annoying WhatsApp Bot**
+>
+> 🔗 https://github.com/AbutiieyyMahappen
 
 ## 🛠 Installation (Termux)
 
@@ -32,5 +37,3 @@ npm install
 
 **Run the bot**
 node index.js
-
-
