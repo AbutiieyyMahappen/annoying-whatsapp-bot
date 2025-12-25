@@ -1,4 +1,5 @@
-    /* 🤖 UNLIMITED REPLIES */
+/* 🤖 UNLIMITED REPLIES BOT */
+
 const {
   default: makeWASocket,
   useMultiFileAuthState,
@@ -7,6 +8,7 @@ const {
 
 const P = require("pino");
 const qrcode = require("qrcode-terminal");
+const readline = require("readline");
 
 /* 👑 OWNER NUMBER (Abutieyy Mahappen) */
 const OWNER_NUMBER = "27687085163@s.whatsapp.net";
@@ -15,13 +17,20 @@ let botEnabled = true;
 
 const replies = [
   "Why are you texting me? 😒",
-  "I Hate you.",
-  "Ohk🤔",
-  "yea im mahappen the developer.",
-  "Hey you son of a b*tch.",
-  "uhmm bored & missing you😣"
-  "Stay tuned for my bot V 1.1.2"
+  "I hate you.",
+  "Ohk 😏",
+  "Yeah, I'm Mahappen the developer.",
+  "I'm bored & missing you 😣",
+  "Stay tuned for my bot v1.1.2 🚀"
 ];
+
+/* 📞 INPUT FOR PHONE PAIRING */
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+const ask = (q) => new Promise(res => rl.question(q, res));
 
 async function startBot() {
   const { state, saveCreds } = await useMultiFileAuthState("auth");
@@ -29,16 +38,24 @@ async function startBot() {
   const sock = makeWASocket({
     logger: P({ level: "silent" }),
     auth: state,
-    printQRInTerminal: false
+    printQRInTerminal: false,
+    browser: ["Annoying Bot", "Chrome", "1.1.2"]
   });
 
   sock.ev.on("creds.update", saveCreds);
+
+  /* 🔑 PHONE NUMBER PAIRING */
+  if (!sock.authState.creds.registered) {
+    const phone = await ask("📞 Enter WhatsApp number (country code, no +): ");
+    const code = await sock.requestPairingCode(phone.trim());
+    console.log("🔢 Pairing Code:", code);
+  }
 
   sock.ev.on("connection.update", (update) => {
     const { connection, lastDisconnect, qr } = update;
 
     if (qr) {
-      console.log("📱 Scan this QR with WhatsApp");
+      console.log("📱 Scan QR if pairing code not used");
       qrcode.generate(qr, { small: true });
     }
 
@@ -68,19 +85,28 @@ async function startBot() {
     const sender = msg.key.participant || msg.key.remoteJid;
     const isOwner = sender === OWNER_NUMBER;
 
-    /* 👑 OWNER COMMANDS */
+    /* 👑 OWNER & PUBLIC COMMANDS */
 
     if (text === "/owner") {
-  return sock.sendMessage(from, {
-    text: `👑 *Bot Developer*
+      return sock.sendMessage(from, {
+        text: `👑 *Bot Developer*
 
 Name: Abutieyy Mahappen
 GitHub: https://github.com/AbutiieyyMahappen
 
-📦 *Fork this bot:*
+🍴 *Fork this bot:*
 https://github.com/AbutiieyyMahappen/annoying-whatsapp-bot`
-  });
-}
+      });
+    }
+
+    if (text === "/github") {
+      return sock.sendMessage(from, {
+        text: `🐙 GitHub Repo
+https://github.com/AbutiieyyMahappen/annoying-whatsapp-bot
+
+⭐ Star & Fork it`
+      });
+    }
 
     if (text === "/ownermenu") {
       if (!isOwner)
@@ -90,7 +116,8 @@ https://github.com/AbutiieyyMahappen/annoying-whatsapp-bot`
         text: `👑 *Owner Menu*
 /on  - Enable bot
 /off - Disable bot
-/owner - Owner info`
+/owner - Owner info
+/github - Source code`
       });
     }
 
@@ -99,8 +126,7 @@ https://github.com/AbutiieyyMahappen/annoying-whatsapp-bot`
         return sock.sendMessage(from, { text: "❌ Owner only command" });
 
       botEnabled = false;
-      await sock.sendMessage(from, { text: "😴 Bot OFF (Owner)" });
-      return;
+      return sock.sendMessage(from, { text: "😴 Bot OFF (Owner)" });
     }
 
     if (text === "/on") {
@@ -108,17 +134,15 @@ https://github.com/AbutiieyyMahappen/annoying-whatsapp-bot`
         return sock.sendMessage(from, { text: "❌ Owner only command" });
 
       botEnabled = true;
-      await sock.sendMessage(from, { text: "😈 Bot ON (Owner)" });
-      return;
+      return sock.sendMessage(from, { text: "😈 Bot ON (Owner)" });
     }
 
-
+    /* 🤖 AUTO REPLIES */
     if (!botEnabled) return;
 
     await new Promise(r => setTimeout(r, 2000));
 
     const reply = replies[Math.floor(Math.random() * replies.length)];
-
     await sock.sendMessage(from, { text: "🤖 " + reply });
   });
 }
