@@ -32,9 +32,13 @@ npm install
 **Run the bot**
 node index.js
 
-/**
- * Annoying WhatsApp Bot
- * Developer: Abutieyy Mahappen
- * GitHub: https://github.com/AbutiieyyMahappen
- * Built with Node.js & Baileys
- */
+---
+
+## 👑 Developer
+
+**Abutieyy Mahappen**  
+Developer & Creator of Annoying WhatsApp Bot
+
+- GitHub: https://github.com/AbutiieyyMahappen
+
+---
