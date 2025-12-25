@@ -11,9 +11,9 @@ let botEnabled = true;
 
 const replies = [
   "Why are you texting me? 😒",
-  "I saw your message… ignored.",
-  "Hmm 🤔",
-  "Okay.",
+  "I Hate you.",
+  "Ohk🤔",
+  "yea im mahappen de developer.",
   "Bot says no.",
   "Try again later 😴"
 ];
