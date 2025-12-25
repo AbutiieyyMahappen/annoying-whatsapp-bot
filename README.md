@@ -1,4 +1,4 @@
-# Annoying WhatsApp Bot 🤖🔥
+# Annoying WhatsApp Bot 🗿😮‍💨
 
 A WhatsApp bot built using **Node.js** and **Baileys**, designed for learning and fun automation.
 
@@ -29,7 +29,5 @@ git clone https://github.com/AbutiieyyMahappen/annoying-whatsapp-bot.git
 cd annoying-whatsapp-bot
 npm install
 
-Run the bot
+**Run the bot**
 node index.js
-
-**Developer Abutieyy Mahappen**
